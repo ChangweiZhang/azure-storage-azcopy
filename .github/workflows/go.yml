@@ -31,7 +31,7 @@ jobs:
       if: github.ref == 'refs/heads/main'
       with:
         tag_name: 'AzCopy'
-        name: Release ${{ github.ref }}
+        name: Release ${{ vars.RELEASE_VERSION }}
         body: New Release.
         draft: false
         prerelease: false
