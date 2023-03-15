@@ -11,7 +11,7 @@ on:
 
 jobs:
 
-  build:
+  build-Linux:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -22,10 +22,26 @@ jobs:
         go-version: 1.19
     
     - name: Build Release
-      run: go build -o ./bin/azcopy
+      run: go build -o ./linux/azcopy
       
     - name: Zip the Build
-      run: zip -r ${{ secrets.ReleaseZipName }} ./bin/
+      run: zip -r ${{ secrets.ReleaseZipName }}-Linux ./linux/
+      
+  build-Windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+    
+    - name: Build Release
+      run: go build -o ./windows/azcopy.exe
+      
+    - name: Zip the Build
+      run: zip -r ${{ secrets.ReleaseZipName }}-Windows ./windows/
       
     
     - name: Create Release and Upload Release Asset
@@ -34,9 +50,10 @@ jobs:
       with:
         tag_name: 'AzCopy'
         name: Release ${{ github.ref }}
-        body: TODO New Release.
+        body: New Release.
         draft: false
         prerelease: false
         files: |
-          ${{ secrets.ReleaseZipName }}.zip
+          ${{ secrets.ReleaseZipName }}-Linux.zip
+          ${{ secrets.ReleaseZipName }}-Windows.zip
           LICENSE 
