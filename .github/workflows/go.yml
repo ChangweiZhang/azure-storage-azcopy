@@ -30,9 +30,9 @@ jobs:
     
     - name: Create Release and Upload Release Asset
       uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
+      if: github.ref == 'refs/heads/main'
       with:
-        tag_name: ${{ github.ref }}
+        tag_name: 'AzCopy'
         name: Release ${{ github.ref }}
         body: TODO New Release.
         draft: false
