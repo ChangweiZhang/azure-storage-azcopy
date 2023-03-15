@@ -50,11 +50,13 @@ jobs:
         go-version: 1.19
     
     - name: Build Release
-      run: go build -o ./windows/azcopy.exe
-      
-    - name: Zip the Build
-      run: zip -r ${{ secrets.ReleaseZipName }}-Windows ./windows/
-      
+      run: go build -o .\windows\azcopy.exe
+    - uses: Amadevus/pwsh-script@v2
+      id: script
+      with:
+        script: |
+          Compress-Archive -LiteralPath .\windows -DestinationPath ${{ secrets.ReleaseZipName }}-Windows.zip
+
     
     - name: Create Release and Upload Release Asset
       uses: softprops/action-gh-release@v1
